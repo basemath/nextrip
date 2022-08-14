@@ -2,6 +2,12 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ErrorService } from '../error.service';
 import { Direction, NexTripService, Route, Stop, Trip } from '../nex-trip.service';
 
+export interface TripCriteria {
+  routeId: string,
+  directionId: string,
+  stopId: string,
+}
+
 @Component({
   selector: 'app-route-selector',
   templateUrl: './route-selector.component.html',
@@ -18,6 +24,7 @@ export class RouteSelectorComponent implements OnInit {
   stops: Stop[] = [];
   selectedStopId: string = "";
 
+  @Output() criteriaChanged = new EventEmitter<TripCriteria>();
   @Output() stopSelected = new EventEmitter<Stop>();
   @Output() tripLoaded = new EventEmitter<Trip>();
 
@@ -38,12 +45,10 @@ export class RouteSelectorComponent implements OnInit {
   }
 
   onRouteSelectionChange(): void {
-    console.log('route changed');
-
     this.selectedDirectionId = '';
     this.selectedStopId = '';
-
-    console.log(this.selectedRouteId);
+    this.directions = [];
+    this.stops = [];
 
     this.nexTripService.getDirections(this.selectedRouteId)
       .then(directions => this.directions = directions)
@@ -52,6 +57,7 @@ export class RouteSelectorComponent implements OnInit {
 
   onDirectionSelectionChange(): void {
     this.selectedStopId = '';
+    this.stops = [];
 
     this.nexTripService.getStops(this.selectedRouteId, this.selectedDirectionId)
       .then(stops => this.stops = stops)
@@ -59,15 +65,8 @@ export class RouteSelectorComponent implements OnInit {
   }
 
   onStopSelectionChange(): void {
-    console.log('stop selected');
-    this.stopSelected.emit(this.selectedStop);
-
     this.nexTripService.getTrip(this.selectedRouteId, this.selectedDirectionId, this.selectedStopId)
-      .then(trip => {
-        console.log('trip loaded, emitting');
-        this.tripLoaded.emit(trip)
-      })
+      .then(trip => this.tripLoaded.emit(trip))
       .catch(err => this.errorService.handle(err));
   }
-
 }

@@ -1,11 +1,13 @@
 <app-route-selector
   (stopSelected)="onStopSelected($event)"
   (tripLoaded)="onTripLoaded($event)"
+  (criteriaChanged)="onCriteriaChanged()"
+  #routeSelector
   ></app-route-selector>
 
 <app-route-viewer
-  *ngIf="selectedStop"
-  [selectedStop]="selectedStop"
+  *ngIf="routeSelector.selectedStop"
+  [selectedStop]="routeSelector.selectedStop"
   [trip]="loadedTrip"
   ></app-route-viewer>
 
