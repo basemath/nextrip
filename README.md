@@ -6,10 +6,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
 ## Build
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
@@ -22,6 +18,35 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
+## Design Decisions
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### Framework Selection
+
+- considerations of Angular vs React vs Vue
+
+### API Integration
+
+- generated api interfaces with script from swagger JSON definition
+- added layer of separation via service class
+
+### Departure Time Displays
+
+- Keeping up-to-date with timestamps vs using the time string form the server
+- Polling interval
+
+### Error handling
+
+### Application Configuration
+
+## Todo
+
+[ ] implement unit tests  
+[ ] implement e2e tests  
+[ ] clean up display of selected trip  
+[ ] show loading indicator when calling API  
+[ ] show error messages on errors thrown  
+[ ] add polling of trip to keep departure times updated  
+[ ] document design decisions  
+[ ] update favicon  
+[ ] generally prettify and make it look app-like  
+[ ] implement 'use current location feature'
