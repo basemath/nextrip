@@ -24,6 +24,8 @@ export class RouteSelectorComponent implements OnInit {
   stops: Stop[] = [];
   selectedStopId: string = "";
 
+  inputStopNumber: string = "";
+
   @Output() criteriaChanged = new EventEmitter<TripCriteria>();
   @Output() stopSelected = new EventEmitter<Stop>();
   @Output() tripLoaded = new EventEmitter<Trip>();
