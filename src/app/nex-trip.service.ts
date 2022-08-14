@@ -13,6 +13,11 @@ export interface Direction {
   directionName: string;
 }
 
+export interface Place {
+  placeCode: string;
+  placeDescription: string;
+}
+
 export interface Stop {
   stopId: number;
   stopDescription: string | null;
@@ -97,19 +102,22 @@ export class NexTripService {
     });
   }
 
-  public async getStops(routeId: string, directionId: string): Promise<Stop[]> {
+  public async getPlaces(
+    routeId: string,
+    directionId: string
+  ): Promise<Place[]> {
     // TODO explain
     const directionAsNumber = Number.parseInt(directionId);
 
-    const apiStops = (
+    const apiPlaces = (
       await this.api.nextripv2.stopsDetail(routeId, directionAsNumber)
     ).data;
 
-    return apiStops.map((apiStop) => {
-      return this.translateApiResponse(apiStop, {
-        place_code: 'stopId',
-        description: 'stopDescription',
-      }) as Stop;
+    return apiPlaces.map((apiPlace) => {
+      return this.translateApiResponse(apiPlace, {
+        place_code: 'placeCode',
+        description: 'placeDescription',
+      }) as Place;
     });
   }
 

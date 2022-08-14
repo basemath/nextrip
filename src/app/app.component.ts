@@ -15,7 +15,6 @@ export class AppComponent {
   @ViewChild('routeSelector') routeSelector!: RouteSelectorComponent;
 
   onTripLoaded(trip: Trip) {
-    console.log('onTripLoaded');
     this.loadedTrip = trip;
   }
 }

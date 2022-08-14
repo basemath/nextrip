@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {
   Direction,
   NexTripService,
+  Place,
   Route,
   Stop,
   Trip,
@@ -27,8 +28,9 @@ export class RouteSelectorComponent implements OnInit {
   directions: Direction[] = [];
   selectedDirectionId: string = '';
 
-  stops: Stop[] = [];
-  selectedStopId: string = '';
+  // TODO: explain wording mismatch here
+  places: Place[] = [];
+  selectedPlaceCode: string = '';
 
   stopNumberForm: FormGroup = new FormGroup({
     stopNumber: new FormControl(this.inputStopNumber, [
@@ -47,7 +49,9 @@ export class RouteSelectorComponent implements OnInit {
   ) {}
 
   get selectedStop() {
-    return this.stops.find((stop) => stop.stopId + '' === this.selectedStopId);
+    return this.places.find(
+      (place) => place.placeCode === this.selectedPlaceCode
+    );
   }
 
   get inputStopNumber() {
@@ -57,15 +61,17 @@ export class RouteSelectorComponent implements OnInit {
   ngOnInit(): void {
     this.nexTripService
       .getRoutes()
-      .then((routes) => (this.routes = routes))
+      .then((routes) => {
+        this.routes = routes;
+      })
       .catch((err) => this.errorService.handle(err));
   }
 
   onRouteSelectionChange(): void {
     this.selectedDirectionId = '';
-    this.selectedStopId = '';
+    this.selectedPlaceCode = '';
     this.directions = [];
-    this.stops = [];
+    this.places = [];
 
     this.nexTripService
       .getDirections(this.selectedRouteId)
@@ -74,12 +80,12 @@ export class RouteSelectorComponent implements OnInit {
   }
 
   onDirectionSelectionChange(): void {
-    this.selectedStopId = '';
-    this.stops = [];
+    this.selectedPlaceCode = '';
+    this.places = [];
 
     this.nexTripService
-      .getStops(this.selectedRouteId, this.selectedDirectionId)
-      .then((stops) => (this.stops = stops))
+      .getPlaces(this.selectedRouteId, this.selectedDirectionId)
+      .then((stops) => (this.places = stops))
       .catch((err) => this.errorService.handle(err));
   }
 
@@ -88,7 +94,7 @@ export class RouteSelectorComponent implements OnInit {
       .getTrip(
         this.selectedRouteId,
         this.selectedDirectionId,
-        this.selectedStopId
+        this.selectedPlaceCode
       )
       .then((trip) => this.tripLoaded.emit(trip))
       .catch((err) => this.errorService.handle(err));
@@ -96,11 +102,11 @@ export class RouteSelectorComponent implements OnInit {
 
   submitStopNumber(): void {
     if (this.inputStopNumber?.valid && this.inputStopNumber?.value) {
-      this.selectedStopId = this.inputStopNumber.value;
+      this.selectedPlaceCode = this.inputStopNumber.value;
     }
 
     this.nexTripService
-      .getTripByStopId(this.selectedStopId)
+      .getTripByStopId(this.selectedPlaceCode)
       .then((trip) => this.tripLoaded.emit(trip))
       .catch((err) => this.errorService.handle(err));
   }

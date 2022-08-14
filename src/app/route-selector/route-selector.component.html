@@ -5,8 +5,9 @@
         [disabled]="!routes || !routes.length"
         (change)="onRouteSelectionChange()"
         [(ngModel)]="selectedRouteId"
+        id="route-select"
       >
-        <option disabled value="">Select a route</option>
+        <option [disabled]="selectedRouteId" value="">Select a route</option>
         <option *ngFor="let route of routes" [value]="route.routeId">
           {{ route.routeLabel }}
         </option>
@@ -18,8 +19,11 @@
         *ngIf="directions?.length"
         (change)="onDirectionSelectionChange()"
         [(ngModel)]="selectedDirectionId"
+        id="direction-select"
       >
-        <option disabled value="">Select a direction</option>
+        <option [disabled]="selectedDirectionId" value="">
+          Select a direction
+        </option>
         <option
           *ngFor="let direction of directions"
           [value]="direction.directionId"
@@ -31,17 +35,18 @@
       <br />
 
       <select
-        *ngIf="stops?.length"
+        *ngIf="places?.length"
         (change)="onStopSelectionChange()"
-        [(ngModel)]="selectedStopId"
+        [(ngModel)]="selectedPlaceCode"
+        id="stop-select"
       >
-        <option disabled value="">Select a stop</option>
+        <option [disabled]="selectedPlaceCode" value="">Select a stop</option>
         <option
-          *ngFor="let stop of stops"
-          [value]="stop.stopId"
-          :key="stop.stopId"
+          *ngFor="let place of places"
+          [value]="place.placeCode"
+          :key="place.placeCode"
         >
-          {{ stop.stopDescription }}
+          {{ place.placeDescription }}
         </option>
       </select>
     </p-tabPanel>
