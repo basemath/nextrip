@@ -4,16 +4,19 @@ import { Stop, Trip } from '../nex-trip.service';
 @Component({
   selector: 'app-route-viewer',
   templateUrl: './route-viewer.component.html',
-  styleUrls: ['./route-viewer.component.scss']
+  styleUrls: ['./route-viewer.component.scss'],
 })
 export class RouteViewerComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   @Input() trip: Trip | undefined = undefined;
-  @Input() selectedStop: Stop | undefined = undefined;
 
+  get firstStop(): Stop | undefined {
+    if (this.trip?.stops?.length) {
+      return this.trip.stops[0];
+    }
+    return undefined;
+  }
 }

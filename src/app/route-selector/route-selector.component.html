@@ -47,11 +47,40 @@
     </p-tabPanel>
 
     <p-tabPanel header="By Stop #">
-      <span class="p-float-label">
-        <input [(ngModel)]="inputStopNumber" id="inputStopNumber" pInputText />
-        <label for="inputStopNumber">Enter stop number</label>
-      </span>
-      <button pButton type="button" icon="pi pi-search" iconPos="left"></button>
+      <form
+        [formGroup]="stopNumberForm"
+        (ngSubmit)="submitStopNumber()"
+        class="stop-number-input"
+      >
+        <div class="p-inputgroup">
+          <span class="p-float-label">
+            <input
+              formControlName="stopNumber"
+              id="inputStopNumber"
+              pInputText
+            />
+            <label for="inputStopNumber">
+              <ng-template [ngIf]="inputStopNumber?.hasError('pattern')">
+                Please enter a valid stop number (no letters, spaces, etc)
+              </ng-template>
+              <ng-template [ngIf]="!inputStopNumber?.hasError('pattern')"
+                >Enter stop number</ng-template
+              >
+            </label>
+          </span>
+
+          <span class="p-inputgroup-addon">
+            <button
+              pButton
+              type="button"
+              icon="pi pi-search"
+              iconPos="left"
+              (click)="submitStopNumber()"
+              [disabled]="!stopNumberForm.valid"
+            ></button>
+          </span>
+        </div>
+      </form>
     </p-tabPanel>
 
     <p-tabPanel header="By Location"> </p-tabPanel>

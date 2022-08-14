@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Api } from './nexTripApi';
-import { ConfigService } from "./config.service";
-import { ErrorService } from "./error.service";
-
+import { Api, NexTripResult } from './nexTripApi';
+import { ConfigService } from './config.service';
+import { ErrorService } from './error.service';
 
 export interface Route {
   routeId: string;
@@ -59,16 +58,16 @@ export interface Trip {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NexTripService {
   private api: Api<unknown>;
 
   constructor(
     configService: ConfigService,
-    private errorService: ErrorService,
+    private errorService: ErrorService
   ) {
-    const config = configService.getConfig()
+    const config = configService.getConfig();
     this.api = new Api({
       baseUrl: config.nexTripApiBaseUrl,
     });
@@ -80,8 +79,8 @@ export class NexTripService {
 
     return apiRoutes.map((apiRoute) => {
       return this.translateApiResponse(apiRoute, {
-        route_id: "routeId",
-        route_label: "routeLabel",
+        route_id: 'routeId',
+        route_label: 'routeLabel',
       }) as Route;
     });
   }
@@ -92,8 +91,8 @@ export class NexTripService {
 
     return apiDirections.map((apiDirection) => {
       return this.translateApiResponse(apiDirection, {
-        direction_id: "directionId",
-        direction_name: "directionName",
+        direction_id: 'directionId',
+        direction_name: 'directionName',
       }) as Direction;
     });
   }
@@ -108,8 +107,8 @@ export class NexTripService {
 
     return apiStops.map((apiStop) => {
       return this.translateApiResponse(apiStop, {
-        place_code: "stopId",
-        description: "stopDescription",
+        place_code: 'stopId',
+        description: 'stopDescription',
       }) as Stop;
     });
   }
@@ -123,34 +122,52 @@ export class NexTripService {
     const directionAsNumber = Number.parseInt(directionId);
 
     const apiTrip = (
-      await this.api.nextripv2.nextripv2Detail2(routeId, directionAsNumber, stopId)
+      await this.api.nextripv2.nextripv2Detail2(
+        routeId,
+        directionAsNumber,
+        stopId
+      )
     ).data;
 
+    return this.tripObjectFromApiResponse(apiTrip);
+  }
+
+  public async getTripByStopId(stopId: string): Promise<Trip> {
+    // TODO explain
+    const stopIdAsNumber = Number.parseInt(stopId);
+
+    const apiTrip = (await this.api.nextripv2.nextripv2Detail(stopIdAsNumber))
+      .data;
+
+    return this.tripObjectFromApiResponse(apiTrip);
+  }
+
+  private tripObjectFromApiResponse(apiTrip: NexTripResult): Trip {
     return {
       stops: apiTrip.stops?.map((apiStop) => {
         return this.translateApiResponse(apiStop, {
           // place_code: "stopId",
-          stop_id: "stopId",
-          description: "stopDescription",
+          stop_id: 'stopId',
+          description: 'stopDescription',
         }) as Stop;
       }),
       alerts: apiTrip.alerts?.map((apiAlert) => {
         return this.translateApiResponse(apiAlert, {
-          stop_closed: "stopClosed",
-          alert_text: "alertText",
+          stop_closed: 'stopClosed',
+          alert_text: 'alertText',
         }) as AlertMessage;
       }),
       departures: apiTrip.departures?.map((apiDeparture) => {
         return this.translateApiResponse(apiDeparture, {
-          trip_id: "tripId",
-          stop_id: "stopId",
-          departure_text: "departureText",
-          departure_time: "departureTime",
-          description: "description",
-          route_id: "routeId",
-          route_short_name: "routeShortName",
-          direction_id: "directionId",
-          direction_text: "directionText",
+          trip_id: 'tripId',
+          stop_id: 'stopId',
+          departure_text: 'departureText',
+          departure_time: 'departureTime',
+          description: 'description',
+          route_id: 'routeId',
+          route_short_name: 'routeShortName',
+          direction_id: 'directionId',
+          direction_text: 'directionText',
         }) as Departure;
       }),
     };
