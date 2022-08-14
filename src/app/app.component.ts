@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Stop, Trip } from './nex-trip.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'nextrip-demo';
+  title = 'Minneapolis Metro';
+
+  loadedTrip: Trip | undefined = undefined;
+  selectedStop: Stop | undefined = undefined;
+
+  onStopSelected(stop: Stop) {
+    this.selectedStop = stop;
+  }
+
+  onTripLoaded(trip: Trip) {
+    this.loadedTrip = trip;
+  }
 }

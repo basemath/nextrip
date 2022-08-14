@@ -1,6 +1,7 @@
-import type { SecureContext } from "tls";
 import { Injectable } from '@angular/core';
 import { Api } from './nexTripApi';
+import { ConfigService } from "./config.service";
+import { ErrorService } from "./error.service";
 
 
 export interface Route {
@@ -61,17 +62,21 @@ export interface Trip {
   providedIn: 'root'
 })
 export class NexTripService {
-  private api: Api<SecureContext>;
+  private api: Api<unknown>;
 
-  constructor(baseUrl: string) {
+  constructor(
+    configService: ConfigService,
+    private errorService: ErrorService,
+  ) {
+    const config = configService.getConfig()
     this.api = new Api({
-      baseUrl: baseUrl,
+      baseUrl: config.nexTripApiBaseUrl,
     });
   }
 
   // TODO handle error response object
   public async getRoutes(): Promise<Route[]> {
-    const apiRoutes = (await this.api.nextripv2.routesList()).data;
+    const apiRoutes = (await this.api?.nextripv2.routesList()).data;
 
     return apiRoutes.map((apiRoute) => {
       return this.translateApiResponse(apiRoute, {
@@ -93,9 +98,12 @@ export class NexTripService {
     });
   }
 
-  public async getStops(routeId: string, directionId: number): Promise<Stop[]> {
+  public async getStops(routeId: string, directionId: string): Promise<Stop[]> {
+    // TODO explain
+    const directionAsNumber = Number.parseInt(directionId);
+
     const apiStops = (
-      await this.api.nextripv2.stopsDetail(routeId, directionId)
+      await this.api.nextripv2.stopsDetail(routeId, directionAsNumber)
     ).data;
 
     return apiStops.map((apiStop) => {
@@ -108,11 +116,14 @@ export class NexTripService {
 
   public async getTrip(
     routeId: string,
-    directionId: number,
+    directionId: string,
     stopId: string
   ): Promise<Trip> {
+    // TODO explain
+    const directionAsNumber = Number.parseInt(directionId);
+
     const apiTrip = (
-      await this.api.nextripv2.nextripv2Detail2(routeId, directionId, stopId)
+      await this.api.nextripv2.nextripv2Detail2(routeId, directionAsNumber, stopId)
     ).data;
 
     return {

@@ -1,0 +1,26 @@
+<div class="trip-view">
+  <h2>{{ selectedStop?.stopDescription }}</h2>
+  <div class="stop #">Stop #: {{ selectedStop?.stopId }}</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Route</th>
+        <th>Destination</th>
+        <th>Departs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let departure of trip?.departures">
+        <td>{{ departure.routeShortName }}</td>
+        <td>{{ departure.description }}</td>
+        <td>{{ departure.departureText }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="no-departures"
+    *ngIf="!trip?.departures || trip?.departures?.length === 0"
+  >
+    No departures at this time
+  </div>
+</div>

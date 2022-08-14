@@ -1,0 +1,46 @@
+<div class="route-selector">
+    This is something
+    <br />
+    <select
+      [disabled]="!routes || !routes.length"
+      (change)="onRouteSelectionChange()"
+      [(ngModel)]="selectedRouteId"
+    >
+      <option disabled value="">Select a route</option>
+      <option
+        *ngFor="let route of routes"
+        [value]="route.routeId"
+      >
+        {{ route.routeLabel }}
+      </option>
+    </select>
+
+    <br />
+
+    <select
+      *ngIf="directions?.length"
+      (change)="onDirectionSelectionChange()"
+      [(ngModel)]="selectedDirectionId"
+    >
+      <option disabled value="">Select a direction</option>
+      <option
+        *ngFor="let direction of directions"
+        [value]="direction.directionId"
+      >
+        {{ direction.directionName }}
+      </option>
+    </select>
+
+    <br />
+
+    <select
+      *ngIf="stops?.length"
+      (change)="onStopSelectionChange()"
+      [(ngModel)]="selectedStopId"
+    >
+      <option disabled value="">Select a stop</option>
+      <option *ngFor="let stop of stops" [value]="stop.stopId" :key="stop.stopId">
+        {{ stop.stopDescription }}
+      </option>
+    </select>
+  </div>
