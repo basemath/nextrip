@@ -8,9 +8,8 @@ describe('RouteViewerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RouteViewerComponent ]
-    })
-    .compileComponents();
+      declarations: [RouteViewerComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(RouteViewerComponent);
     component = fixture.componentInstance;

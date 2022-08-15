@@ -9,6 +9,8 @@ import {
 } from '../nex-trip.service';
 import { ErrorService } from '../error.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ConfigService } from '../config.service';
+import { interval } from 'rxjs';
 
 export interface TripCriteria {
   routeId: string;
@@ -41,7 +43,8 @@ export class RouteSelectorComponent implements OnInit {
     private nexTripService: NexTripService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService
   ) {}
 
   get selectedStop() {
@@ -58,6 +61,21 @@ export class RouteSelectorComponent implements OnInit {
       })
       .catch((err) => this.errorService.handle(err));
 
+    const pollIntervalInMs = this.configService.getConfig().pollIntervalInMs;
+    interval(pollIntervalInMs).subscribe(() => {
+      if (
+        this.selectedRouteId &&
+        this.selectedDirectionId &&
+        this.selectedPlaceCode
+      ) {
+        this.loadTrip();
+      }
+    });
+
+    this.handleUrlParams();
+  }
+
+  private handleUrlParams(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.selectedRouteId = params.get('routeId') || '';
       this.selectedDirectionId = '';
@@ -126,7 +144,10 @@ export class RouteSelectorComponent implements OnInit {
       .then((trip) => {
         this.loadedTrip = trip;
       })
-      .catch((err) => this.errorService.handle(err));
+      .catch((err) => {
+        this.loadedTrip = undefined;
+        this.errorService.handle(err);
+      });
   }
 
   onStopSelectionChange(): void {

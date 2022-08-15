@@ -2,7 +2,12 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { NexTripService } from './nex-trip.service';
-import { NexTripApi } from './nexTripApi';
+import {
+  ApiRoute,
+  HttpResponse,
+  NexTripApi,
+  ProblemDetails,
+} from './nexTripApi';
 
 describe('NexTripService', () => {
   let service: NexTripService;
@@ -18,6 +23,21 @@ describe('NexTripService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('getRoutes()', () => {
+    it('should handle an empty array response', async () => {
+      spyOn(api.nextripv2, 'routesList').and.returnValue(
+        Promise.resolve({ data: [] } as unknown as HttpResponse<
+          ApiRoute[],
+          ProblemDetails | void
+        >)
+      );
+
+      const routes = await service.getRoutes();
+      expect(routes).toBeTruthy();
+      expect(routes.length).toEqual(0);
+    });
   });
 });
 

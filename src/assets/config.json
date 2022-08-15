@@ -1,3 +1,4 @@
 {
-  "nexTripApiBaseUrl": "https://svc.metrotransit.org"
+  "nexTripApiBaseUrl": "https://svc.metrotransit.org",
+  "pollIntervalInMs": 30000
 }

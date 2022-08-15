@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 
 export interface ApplicationConfig {
   nexTripApiBaseUrl: string;
+  pollIntervalInMs: number;
 }
 
 @Injectable({
@@ -14,6 +15,7 @@ export class ConfigService {
 
   private config: ApplicationConfig = {
     nexTripApiBaseUrl: '',
+    pollIntervalInMs: -1,
   };
 
   public getConfig(): ApplicationConfig {

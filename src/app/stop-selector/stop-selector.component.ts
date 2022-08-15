@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { interval } from 'rxjs';
+import { ConfigService } from '../config.service';
 import { ErrorService } from '../error.service';
 import { NexTripService, Trip } from '../nex-trip.service';
 
@@ -23,25 +25,45 @@ export class StopSelectorComponent implements OnInit {
     private nexTripService: NexTripService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private configService: ConfigService
   ) {}
 
   ngOnInit(): void {
+    this.handleRouteParams();
+
+    const pollIntervalInMs = this.configService.getConfig().pollIntervalInMs;
+    interval(pollIntervalInMs).subscribe(() => {
+      if (this.stopNumberForm.valid) {
+        this.loadTrip();
+      }
+    });
+  }
+
+  private handleRouteParams(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const stopNumber = params.get('stopId') || '';
 
       if (stopNumber) {
         this.inputStopNumber?.setValue(stopNumber);
 
-        this.loadedTrip = undefined;
-        this.nexTripService
-          .getTripByStopId(stopNumber)
-          .then((trip) => {
-            this.loadedTrip = trip;
-          })
-          .catch((err) => this.errorService.handle(err));
+        if (this.stopNumberForm.valid) {
+          this.loadTrip();
+        }
       }
     });
+  }
+
+  private loadTrip(): void {
+    this.nexTripService
+      .getTripByStopId(this.inputStopNumber?.value)
+      .then((trip) => {
+        this.loadedTrip = trip;
+      })
+      .catch((err) => {
+        this.loadedTrip = undefined;
+        this.errorService.handle(err);
+      });
   }
 
   get inputStopNumber() {
