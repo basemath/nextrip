@@ -11,8 +11,6 @@ import {
   Route,
   Trip,
 } from '../nex-trip.service';
-import { first } from 'rxjs/operators';
-
 import { RouteSelectorComponent } from './route-selector.component';
 import { RouterModule } from '@angular/router';
 
@@ -161,31 +159,6 @@ describe('RouteSelectorComponent', () => {
       );
     })
   );
-
-  it('should load a trip and emit it when the route, direction, and stop are selected', async () => {
-    const routeSelect = getRouteSelect(fixture);
-    fixture.detectChanges();
-    routeSelect.value = routeSelect.options[1].value;
-    routeSelect.dispatchEvent(new Event('change'));
-
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const directionSelect = getDirectionSelect(fixture);
-    directionSelect.value = directionSelect.options[1].value;
-    directionSelect.dispatchEvent(new Event('change'));
-
-    await fixture.whenStable();
-    fixture.detectChanges();
-    const stopSelect = getStopSelect(fixture);
-    stopSelect.value = stopSelect.options[1].value;
-    stopSelect.dispatchEvent(new Event('change'));
-
-    return new Promise<void>((resolve) => {
-      fixture.componentInstance.tripLoaded.pipe(first()).subscribe((trip) => {
-        resolve();
-      });
-    });
-  });
 });
 
 function selectFirstStop(fixture: ComponentFixture<any>): void {
