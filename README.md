@@ -57,11 +57,12 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 [x] implement unit tests  
 [x] implement e2e tests  
+[ ] add routing handler  
 [ ] clean up display of selected trip  
 [ ] show loading indicator when calling API  
 [ ] show error messages on errors thrown  
 [ ] add polling of trip to keep departure times updated  
 [ ] document design decisions  
-[ ] update favicon  
+[x] update favicon  
 [ ] generally prettify and make it look app-like  
 [ ] implement 'use current location feature'
