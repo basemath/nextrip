@@ -13,5 +13,10 @@ describe('Happy path', () => {
     cy.get('[data-cy="stop-select"]').select(
       'MSP Airport Terminal 2 - Humphrey Station'
     );
+
+    cy.contains('Terminal 2 Humphrey Station');
+    cy.contains('Stop #: 51435');
+    cy.contains('Blue');
+    cy.contains('to Mpls-Target Field');
   });
 });
