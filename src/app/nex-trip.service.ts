@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Api, NexTripResult } from './nexTripApi';
-import { ConfigService } from './config.service';
+import { NexTripApi, NexTripResult } from './nexTripApi';
 import { ErrorService } from './error.service';
 
 export interface Route {
@@ -66,17 +65,10 @@ export interface Trip {
   providedIn: 'root',
 })
 export class NexTripService {
-  private api: Api<unknown>;
-
   constructor(
-    configService: ConfigService,
-    private errorService: ErrorService
-  ) {
-    const config = configService.getConfig();
-    this.api = new Api({
-      baseUrl: config.nexTripApiBaseUrl,
-    });
-  }
+    private errorService: ErrorService,
+    private api: NexTripApi<void>
+  ) {}
 
   // TODO handle error response object
   public async getRoutes(): Promise<Route[]> {

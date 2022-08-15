@@ -13,6 +13,7 @@ import {
 } from '../nex-trip.service';
 import { RouteSelectorComponent } from './route-selector.component';
 import { RouterModule } from '@angular/router';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('RouteSelectorComponent', () => {
   let component: RouteSelectorComponent;
@@ -23,7 +24,7 @@ describe('RouteSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RouteSelectorComponent],
-      imports: [RouterModule.forRoot([])],
+      imports: [RouterModule.forRoot([]), HttpClientTestingModule],
     }).compileComponents();
 
     nexTripService = TestBed.inject(NexTripService);

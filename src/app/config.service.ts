@@ -1,20 +1,31 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { lastValueFrom } from 'rxjs';
 
 export interface ApplicationConfig {
   nexTripApiBaseUrl: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConfigService {
+  constructor(private http: HttpClient) {}
 
-  constructor() { }
+  private config: ApplicationConfig = {
+    nexTripApiBaseUrl: '',
+  };
 
-  public getConfig() {
-    return {
-      // TODO break it out
-      nexTripApiBaseUrl: 'https://svc.metrotransit.org',
-    };
+  public getConfig(): ApplicationConfig {
+    return this.config;
+  }
+
+  private async load(): Promise<ApplicationConfig> {
+    const data = await lastValueFrom(this.http.get('./assets/config.json'));
+    return data as ApplicationConfig;
+  }
+
+  public async init(): Promise<void> {
+    this.config = await this.load();
   }
 }

@@ -1,13 +1,19 @@
 import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { NexTripService } from './nex-trip.service';
+import { NexTripApi } from './nexTripApi';
 
 describe('NexTripService', () => {
   let service: NexTripService;
+  let api: NexTripApi<void>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+    });
     service = TestBed.inject(NexTripService);
+    api = TestBed.inject(NexTripApi);
   });
 
   it('should be created', () => {
