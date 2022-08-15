@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { Stop, Trip } from './nex-trip.service';
-import { RouteSelectorComponent } from './route-selector/route-selector.component';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +7,4 @@ import { RouteSelectorComponent } from './route-selector/route-selector.componen
 })
 export class AppComponent {
   title = 'Minneapolis Metro';
-
-  loadedTrip: Trip | undefined = undefined;
-
-  @ViewChild('routeSelector') routeSelector!: RouteSelectorComponent;
-
-  onTripLoaded(trip: Trip) {
-    this.loadedTrip = trip;
-  }
 }

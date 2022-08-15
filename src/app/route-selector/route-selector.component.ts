@@ -9,6 +9,8 @@ import {
 } from '../nex-trip.service';
 import { ErrorService } from '../error.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { map, switchMap } from 'rxjs';
 
 export interface TripCriteria {
   routeId: string;
@@ -45,7 +47,9 @@ export class RouteSelectorComponent implements OnInit {
 
   constructor(
     private nexTripService: NexTripService,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   get selectedStop() {
@@ -65,32 +69,70 @@ export class RouteSelectorComponent implements OnInit {
         this.routes = routes;
       })
       .catch((err) => this.errorService.handle(err));
+
+    console.log(this.route.snapshot);
+
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.selectedRouteId = params.get('routeId') || '';
+      this.selectedDirectionId = '';
+      this.selectedPlaceCode = '';
+      this.directions = [];
+      this.places = [];
+
+      if (!this.selectedRouteId) {
+        return;
+      }
+
+      this.loadDirections()
+        .then(() => {
+          this.selectedDirectionId = params.get('directionId') || '';
+          return this.selectedDirectionId ? this.loadStops() : undefined;
+        })
+        .then(() => {
+          this.selectedPlaceCode = params.get('placeCode') || '';
+          return this.selectedPlaceCode ? this.loadTrip() : undefined;
+        });
+    });
   }
 
-  onRouteSelectionChange(): void {
+  private loadDirections(): Promise<void> {
     this.selectedDirectionId = '';
     this.selectedPlaceCode = '';
     this.directions = [];
     this.places = [];
 
-    this.nexTripService
+    return this.nexTripService
       .getDirections(this.selectedRouteId)
       .then((directions) => (this.directions = directions))
-      .catch((err) => this.errorService.handle(err));
+      .catch((err) => this.errorService.handle(err))
+      .then();
   }
 
-  onDirectionSelectionChange(): void {
+  onRouteSelectionChange(): void {
+    this.router.navigate(['byRoute', this.selectedRouteId]);
+  }
+
+  private loadStops(): Promise<void> {
     this.selectedPlaceCode = '';
     this.places = [];
 
-    this.nexTripService
+    return this.nexTripService
       .getPlaces(this.selectedRouteId, this.selectedDirectionId)
       .then((stops) => (this.places = stops))
-      .catch((err) => this.errorService.handle(err));
+      .catch((err) => this.errorService.handle(err))
+      .then();
   }
 
-  onStopSelectionChange(): void {
-    this.nexTripService
+  onDirectionSelectionChange(): void {
+    this.router.navigate([
+      'byRoute',
+      this.selectedRouteId,
+      this.selectedDirectionId,
+    ]);
+  }
+
+  private loadTrip(): Promise<void> {
+    return this.nexTripService
       .getTrip(
         this.selectedRouteId,
         this.selectedDirectionId,
@@ -98,6 +140,15 @@ export class RouteSelectorComponent implements OnInit {
       )
       .then((trip) => this.tripLoaded.emit(trip))
       .catch((err) => this.errorService.handle(err));
+  }
+
+  onStopSelectionChange(): void {
+    this.router.navigate([
+      'byRoute',
+      this.selectedRouteId,
+      this.selectedDirectionId,
+      this.selectedPlaceCode,
+    ]);
   }
 
   submitStopNumber(): void {

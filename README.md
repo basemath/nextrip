@@ -57,7 +57,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 [x] implement unit tests  
 [x] implement e2e tests  
-[ ] add routing handler  
+[x] add routing handler  
 [ ] clean up display of selected trip  
 [ ] show loading indicator when calling API  
 [ ] show error messages on errors thrown  

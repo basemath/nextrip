@@ -11,9 +11,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouteSelectorComponent } from './route-selector/route-selector.component';
 import { RouteViewerComponent } from './route-viewer/route-viewer.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NexTripPageComponent } from './nex-trip-page/nex-trip-page.component';
 
 @NgModule({
-  declarations: [AppComponent, RouteSelectorComponent, RouteViewerComponent],
+  declarations: [
+    AppComponent,
+    RouteSelectorComponent,
+    RouteViewerComponent,
+    PageNotFoundComponent,
+    NexTripPageComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

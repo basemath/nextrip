@@ -1,0 +1,10 @@
+<img src="/assets/MetroTransitLogo.svg" />
+
+<h2>Real-Time Departures</h2>
+
+<app-route-selector
+  (tripLoaded)="onTripLoaded($event)"
+  #routeSelector
+></app-route-selector>
+
+<app-route-viewer *ngIf="loadedTrip" [trip]="loadedTrip"></app-route-viewer>
