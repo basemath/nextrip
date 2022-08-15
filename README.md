@@ -55,8 +55,8 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 
 ## Todo
 
-[ ] implement unit tests  
-[ ] implement e2e tests  
+[x] implement unit tests  
+[x] implement e2e tests  
 [ ] clean up display of selected trip  
 [ ] show loading indicator when calling API  
 [ ] show error messages on errors thrown  
