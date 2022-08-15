@@ -37,3 +37,20 @@ describe('Route URL test', () => {
     cy.contains('to Mpls-Target Field');
   });
 });
+
+describe('Back and Forward Buttons test', () => {
+  it('Tests that the back and forward browser buttons navigate between stop selections', () => {
+    cy.visit('/byRoute/901/0/HHTE');
+
+    cy.get('[data-cy="stop-select"]').select(
+      'MSP Airport Terminal 1 - Lindbergh Station'
+    );
+    cy.contains('Terminal 1 Lindbergh Station');
+
+    cy.go('back');
+    cy.contains('Terminal 2 Humphrey Station');
+
+    cy.go('forward');
+    cy.contains('Terminal 1 Lindbergh Station');
+  });
+});
