@@ -20,6 +20,7 @@ export class StopSelectorComponent implements OnInit {
   });
 
   loadedTrip: Trip | undefined;
+  errorMessage: string = '';
 
   constructor(
     private nexTripService: NexTripService,
@@ -55,14 +56,21 @@ export class StopSelectorComponent implements OnInit {
   }
 
   private loadTrip(): void {
+    console.log('55555555555555555');
+    console.log('loadTrip()');
     this.nexTripService
       .getTripByStopId(this.inputStopNumber?.value)
       .then((trip) => {
+        console.log('11111111111111');
+        console.log(trip);
         this.loadedTrip = trip;
       })
       .catch((err) => {
-        this.loadedTrip = undefined;
-        this.errorService.handle(err);
+        if (err.status == 400) {
+          this.errorMessage = `"${this.inputStopNumber?.value}" is not a known stop number`;
+        } else {
+          this.errorService.handle(err);
+        }
       });
   }
 

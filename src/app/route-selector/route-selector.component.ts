@@ -145,7 +145,6 @@ export class RouteSelectorComponent implements OnInit {
         this.loadedTrip = trip;
       })
       .catch((err) => {
-        this.loadedTrip = undefined;
         this.errorService.handle(err);
       });
   }

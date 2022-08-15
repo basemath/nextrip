@@ -29,4 +29,14 @@
   </div>
 </form>
 
+<ng-template [ngIf]="errorMessage">
+  <br />
+  <br />
+  <p-message
+    class="error-message"
+    severity="error"
+    text="{{ errorMessage }}"
+  ></p-message>
+</ng-template>
+
 <app-route-viewer *ngIf="loadedTrip" [trip]="loadedTrip"></app-route-viewer>
