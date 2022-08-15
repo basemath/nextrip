@@ -6,6 +6,7 @@
         (change)="onRouteSelectionChange()"
         [(ngModel)]="selectedRouteId"
         id="route-select"
+        data-cy="route-select"
       >
         <option [disabled]="selectedRouteId" value="">Select a route</option>
         <option *ngFor="let route of routes" [value]="route.routeId">
@@ -20,6 +21,7 @@
         (change)="onDirectionSelectionChange()"
         [(ngModel)]="selectedDirectionId"
         id="direction-select"
+        data-cy="direction-select"
       >
         <option [disabled]="selectedDirectionId" value="">
           Select a direction
@@ -39,6 +41,7 @@
         (change)="onStopSelectionChange()"
         [(ngModel)]="selectedPlaceCode"
         id="stop-select"
+        data-cy="stop-select"
       >
         <option [disabled]="selectedPlaceCode" value="">Select a stop</option>
         <option
