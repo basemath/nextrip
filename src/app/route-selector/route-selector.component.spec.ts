@@ -14,6 +14,7 @@ import {
 import { first } from 'rxjs/operators';
 
 import { RouteSelectorComponent } from './route-selector.component';
+import { RouterModule } from '@angular/router';
 
 describe('RouteSelectorComponent', () => {
   let component: RouteSelectorComponent;
@@ -24,6 +25,7 @@ describe('RouteSelectorComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [RouteSelectorComponent],
+      imports: [RouterModule.forRoot([])],
     }).compileComponents();
 
     nexTripService = TestBed.inject(NexTripService);

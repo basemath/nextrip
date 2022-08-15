@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+
+* {
+  font-family: sans-serif;
+}
+
+/// from https://css-tricks.com/snippets/sass/mixin-manage-breakpoints/
+///
+$breakpoints: (
+  "small": 600px,
+  "medium": 992px,
+  "large": 1200px,
+) !default;
+
+/// Mixin to manage responsive breakpoints
+/// @author Kitty Giraudel
+/// @param {String} $breakpoint - Breakpoint name
+/// @require $breakpoints
+@mixin respond-to($breakpoint) {
+  // If the key exists in the map
+  @if map-has-key($breakpoints, $breakpoint) {
+    // Prints a media query based on the value
+    @media (max-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  // If the key doesn't exist in the map
+  @else {
+    @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
+  }
+}
+
+.container {
+  width: 500px;
+  margin: 0 auto;
+
+  @include respond-to("small") {
+    width: 100%;
+    margin: 0;
+  }
+
+  table {
+    width: 100%;
+  }
+}

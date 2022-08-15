@@ -1,96 +1,56 @@
 <div class="route-selector">
-  <p-tabView>
-    <p-tabPanel header="By Route">
-      <select
-        [disabled]="!routes || !routes.length"
-        (change)="onRouteSelectionChange()"
-        [(ngModel)]="selectedRouteId"
-        id="route-select"
-        data-cy="route-select"
+  <div class="select">
+    <i class="pi pi-angle-down"></i>
+    <select
+      [disabled]="!routes || !routes.length"
+      (change)="onRouteSelectionChange()"
+      [(ngModel)]="selectedRouteId"
+      id="route-select"
+      data-cy="route-select"
+    >
+      <option [disabled]="selectedRouteId" value="">Select a route</option>
+      <option *ngFor="let route of routes" [value]="route.routeId">
+        {{ route.routeLabel }}
+      </option>
+    </select>
+  </div>
+
+  <div class="select" *ngIf="directions?.length">
+    <i class="pi pi-angle-down"></i>
+    <select
+      (change)="onDirectionSelectionChange()"
+      [(ngModel)]="selectedDirectionId"
+      id="direction-select"
+      data-cy="direction-select"
+    >
+      <option [disabled]="selectedDirectionId" value="">
+        Select a direction
+      </option>
+      <option
+        *ngFor="let direction of directions"
+        [value]="direction.directionId"
       >
-        <option [disabled]="selectedRouteId" value="">Select a route</option>
-        <option *ngFor="let route of routes" [value]="route.routeId">
-          {{ route.routeLabel }}
-        </option>
-      </select>
+        {{ direction.directionName }}
+      </option>
+    </select>
+  </div>
 
-      <br />
-
-      <select
-        *ngIf="directions?.length"
-        (change)="onDirectionSelectionChange()"
-        [(ngModel)]="selectedDirectionId"
-        id="direction-select"
-        data-cy="direction-select"
+  <div class="select" *ngIf="places?.length">
+    <i class="pi pi-angle-down"></i>
+    <select
+      (change)="onStopSelectionChange()"
+      [(ngModel)]="selectedPlaceCode"
+      id="stop-select"
+      data-cy="stop-select"
+    >
+      <option [disabled]="selectedPlaceCode" value="">Select a stop</option>
+      <option
+        *ngFor="let place of places"
+        [value]="place.placeCode"
+        :key="place.placeCode"
       >
-        <option [disabled]="selectedDirectionId" value="">
-          Select a direction
-        </option>
-        <option
-          *ngFor="let direction of directions"
-          [value]="direction.directionId"
-        >
-          {{ direction.directionName }}
-        </option>
-      </select>
-
-      <br />
-
-      <select
-        *ngIf="places?.length"
-        (change)="onStopSelectionChange()"
-        [(ngModel)]="selectedPlaceCode"
-        id="stop-select"
-        data-cy="stop-select"
-      >
-        <option [disabled]="selectedPlaceCode" value="">Select a stop</option>
-        <option
-          *ngFor="let place of places"
-          [value]="place.placeCode"
-          :key="place.placeCode"
-        >
-          {{ place.placeDescription }}
-        </option>
-      </select>
-    </p-tabPanel>
-
-    <p-tabPanel header="By Stop #">
-      <form
-        [formGroup]="stopNumberForm"
-        (ngSubmit)="submitStopNumber()"
-        class="stop-number-input"
-      >
-        <div class="p-inputgroup">
-          <span class="p-float-label">
-            <input
-              formControlName="stopNumber"
-              id="inputStopNumber"
-              pInputText
-            />
-            <label for="inputStopNumber">
-              <ng-template [ngIf]="inputStopNumber?.hasError('pattern')">
-                Please enter a valid stop number (no letters, spaces, etc)
-              </ng-template>
-              <ng-template [ngIf]="!inputStopNumber?.hasError('pattern')"
-                >Enter stop number</ng-template
-              >
-            </label>
-          </span>
-
-          <span class="p-inputgroup-addon">
-            <button
-              pButton
-              type="button"
-              icon="pi pi-search"
-              iconPos="left"
-              (click)="submitStopNumber()"
-              [disabled]="!stopNumberForm.valid"
-            ></button>
-          </span>
-        </div>
-      </form>
-    </p-tabPanel>
-
-    <p-tabPanel header="By Location"> </p-tabPanel>
-  </p-tabView>
+        {{ place.placeDescription }}
+      </option>
+    </select>
+  </div>
 </div>

@@ -8,9 +8,7 @@ import {
   Trip,
 } from '../nex-trip.service';
 import { ErrorService } from '../error.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { map, switchMap } from 'rxjs';
 
 export interface TripCriteria {
   routeId: string;
@@ -34,13 +32,6 @@ export class RouteSelectorComponent implements OnInit {
   places: Place[] = [];
   selectedPlaceCode: string = '';
 
-  stopNumberForm: FormGroup = new FormGroup({
-    stopNumber: new FormControl(this.inputStopNumber, [
-      Validators.required,
-      Validators.pattern('^\\d+$'),
-    ]),
-  });
-
   @Output() criteriaChanged = new EventEmitter<TripCriteria>();
   @Output() stopSelected = new EventEmitter<Stop>();
   @Output() tripLoaded = new EventEmitter<Trip>();
@@ -56,10 +47,6 @@ export class RouteSelectorComponent implements OnInit {
     return this.places.find(
       (place) => place.placeCode === this.selectedPlaceCode
     );
-  }
-
-  get inputStopNumber() {
-    return this.stopNumberForm?.get('stopNumber');
   }
 
   ngOnInit(): void {
@@ -149,16 +136,5 @@ export class RouteSelectorComponent implements OnInit {
       this.selectedDirectionId,
       this.selectedPlaceCode,
     ]);
-  }
-
-  submitStopNumber(): void {
-    if (this.inputStopNumber?.valid && this.inputStopNumber?.value) {
-      this.selectedPlaceCode = this.inputStopNumber.value;
-    }
-
-    this.nexTripService
-      .getTripByStopId(this.selectedPlaceCode)
-      .then((trip) => this.tripLoaded.emit(trip))
-      .catch((err) => this.errorService.handle(err));
   }
 }

@@ -57,9 +57,9 @@ export interface Departure {
 }
 
 export interface Trip {
-  stops?: Stop[] | null;
+  stops: Stop[];
   alerts?: AlertMessage[] | null;
-  departures?: Departure[] | null;
+  departures: Departure[];
 }
 
 @Injectable({
@@ -152,32 +152,34 @@ export class NexTripService {
 
   private tripObjectFromApiResponse(apiTrip: NexTripResult): Trip {
     return {
-      stops: apiTrip.stops?.map((apiStop) => {
-        return this.translateApiResponse(apiStop, {
-          // place_code: "stopId",
-          stop_id: 'stopId',
-          description: 'stopDescription',
-        }) as Stop;
-      }),
+      stops:
+        apiTrip.stops?.map((apiStop) => {
+          return this.translateApiResponse(apiStop, {
+            // place_code: "stopId",
+            stop_id: 'stopId',
+            description: 'stopDescription',
+          }) as Stop;
+        }) || [],
       alerts: apiTrip.alerts?.map((apiAlert) => {
         return this.translateApiResponse(apiAlert, {
           stop_closed: 'stopClosed',
           alert_text: 'alertText',
         }) as AlertMessage;
       }),
-      departures: apiTrip.departures?.map((apiDeparture) => {
-        return this.translateApiResponse(apiDeparture, {
-          trip_id: 'tripId',
-          stop_id: 'stopId',
-          departure_text: 'departureText',
-          departure_time: 'departureTime',
-          description: 'description',
-          route_id: 'routeId',
-          route_short_name: 'routeShortName',
-          direction_id: 'directionId',
-          direction_text: 'directionText',
-        }) as Departure;
-      }),
+      departures:
+        apiTrip.departures?.map((apiDeparture) => {
+          return this.translateApiResponse(apiDeparture, {
+            trip_id: 'tripId',
+            stop_id: 'stopId',
+            departure_text: 'departureText',
+            departure_time: 'departureTime',
+            description: 'description',
+            route_id: 'routeId',
+            route_short_name: 'routeShortName',
+            direction_id: 'directionId',
+            direction_text: 'directionText',
+          }) as Departure;
+        }) || [],
     };
   }
 

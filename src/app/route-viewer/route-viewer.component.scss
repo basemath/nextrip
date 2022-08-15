@@ -1,0 +1,55 @@
+h2 {
+  font-size: 18px;
+}
+
+.meta {
+  margin-top: 1em;
+  padding: 12px 12px 2em 12px;
+  clear: both;
+
+  .stop-description {
+    float: left;
+  }
+
+  .stop-number {
+    float: right;
+  }
+
+  * {
+    text-align: top;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+table {
+  border-spacing: 0;
+}
+
+td,
+th {
+  margin: 0;
+  border: 0;
+  padding: 12px;
+}
+
+th {
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  color: #404040;
+  background: #ffd200;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-align: left;
+  font-size: 16px;
+}
+
+td {
+  border-bottom: 1px solid #dfdfdf;
+}
+
+th.departure-time,
+td.departure-time {
+  text-align: right;
+}
