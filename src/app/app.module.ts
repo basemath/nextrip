@@ -6,13 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { RouteSelectorComponent } from './route-selector/route-selector.component';
 import { RouteViewerComponent } from './route-viewer/route-viewer.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { NexTripPageComponent } from './nex-trip-page/nex-trip-page.component';
+import { StopSelectorComponent } from './stop-selector/stop-selector.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { NexTripPageComponent } from './nex-trip-page/nex-trip-page.component';
     RouteSelectorComponent,
     RouteViewerComponent,
     PageNotFoundComponent,
-    NexTripPageComponent,
+    StopSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,6 +31,7 @@ import { NexTripPageComponent } from './nex-trip-page/nex-trip-page.component';
     TabViewModule,
     InputTextModule,
     ButtonModule,
+    TableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

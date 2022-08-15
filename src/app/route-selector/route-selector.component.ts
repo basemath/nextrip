@@ -32,9 +32,10 @@ export class RouteSelectorComponent implements OnInit {
   places: Place[] = [];
   selectedPlaceCode: string = '';
 
+  loadedTrip: Trip | undefined = undefined;
+
   @Output() criteriaChanged = new EventEmitter<TripCriteria>();
   @Output() stopSelected = new EventEmitter<Stop>();
-  @Output() tripLoaded = new EventEmitter<Trip>();
 
   constructor(
     private nexTripService: NexTripService,
@@ -57,14 +58,13 @@ export class RouteSelectorComponent implements OnInit {
       })
       .catch((err) => this.errorService.handle(err));
 
-    console.log(this.route.snapshot);
-
     this.route.paramMap.subscribe((params: ParamMap) => {
       this.selectedRouteId = params.get('routeId') || '';
       this.selectedDirectionId = '';
       this.selectedPlaceCode = '';
       this.directions = [];
       this.places = [];
+      this.loadedTrip = undefined;
 
       if (!this.selectedRouteId) {
         return;
@@ -87,6 +87,7 @@ export class RouteSelectorComponent implements OnInit {
     this.selectedPlaceCode = '';
     this.directions = [];
     this.places = [];
+    this.loadedTrip = undefined;
 
     return this.nexTripService
       .getDirections(this.selectedRouteId)
@@ -96,12 +97,13 @@ export class RouteSelectorComponent implements OnInit {
   }
 
   onRouteSelectionChange(): void {
-    this.router.navigate(['byRoute', this.selectedRouteId]);
+    this.loadDirections();
   }
 
   private loadStops(): Promise<void> {
     this.selectedPlaceCode = '';
     this.places = [];
+    this.loadedTrip = undefined;
 
     return this.nexTripService
       .getPlaces(this.selectedRouteId, this.selectedDirectionId)
@@ -111,11 +113,7 @@ export class RouteSelectorComponent implements OnInit {
   }
 
   onDirectionSelectionChange(): void {
-    this.router.navigate([
-      'byRoute',
-      this.selectedRouteId,
-      this.selectedDirectionId,
-    ]);
+    this.loadStops();
   }
 
   private loadTrip(): Promise<void> {
@@ -125,7 +123,9 @@ export class RouteSelectorComponent implements OnInit {
         this.selectedDirectionId,
         this.selectedPlaceCode
       )
-      .then((trip) => this.tripLoaded.emit(trip))
+      .then((trip) => {
+        this.loadedTrip = trip;
+      })
       .catch((err) => this.errorService.handle(err));
   }
 

@@ -1,8 +1,0 @@
-<div class="container">
-  <app-route-selector
-    (tripLoaded)="onTripLoaded($event)"
-    #routeSelector
-  ></app-route-selector>
-
-  <app-route-viewer *ngIf="loadedTrip" [trip]="loadedTrip"></app-route-viewer>
-</div>

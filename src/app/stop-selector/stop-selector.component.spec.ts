@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NexTripPageComponent } from './nex-trip-page.component';
+import { StopSelectorComponent } from './stop-selector.component';
 
-describe('NexTripPageComponent', () => {
-  let component: NexTripPageComponent;
-  let fixture: ComponentFixture<NexTripPageComponent>;
+describe('StopSelectorComponent', () => {
+  let component: StopSelectorComponent;
+  let fixture: ComponentFixture<StopSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NexTripPageComponent ]
+      declarations: [ StopSelectorComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NexTripPageComponent);
+    fixture = TestBed.createComponent(StopSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

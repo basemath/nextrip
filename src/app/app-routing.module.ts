@@ -1,28 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NexTripPageComponent } from './nex-trip-page/nex-trip-page.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { RouteSelectorComponent } from './route-selector/route-selector.component';
+import { StopSelectorComponent } from './stop-selector/stop-selector.component';
 
-/**
- * This is admittedly **not** the way to set up routing in Angular,
- * using the same component for all these features. But it gets
- * it working tonight :) :) :)
- */
 const routes: Routes = [
-  { path: 'byRoute', component: NexTripPageComponent },
-  { path: 'byRoute/:routeId', component: NexTripPageComponent },
-  { path: 'byRoute/:routeId/:directionId', component: NexTripPageComponent },
+  { path: 'byRoute', component: RouteSelectorComponent },
   {
     path: 'byRoute/:routeId/:directionId/:placeCode',
-    component: NexTripPageComponent,
+    component: RouteSelectorComponent,
   },
   {
     path: 'byStopNumber',
-    component: NexTripPageComponent,
+    component: StopSelectorComponent,
   },
   {
     path: 'byStopNumber/:stopId',
-    component: NexTripPageComponent,
+    component: StopSelectorComponent,
   },
   { path: '', redirectTo: '/byRoute', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
