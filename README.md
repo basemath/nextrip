@@ -80,3 +80,4 @@ To get there, the following need to be done:
 - Error handling must be implemented to handle errors and display them to the user as appropriate
 - Error handling needs to be implmented to log errors and help support staff and developers debug issues in production
 - Localization and accessibility should be considered with the product owner and implemented as needed
+- In this case I took the liberty to implement things that were not specifically in the requirements, such as the "By Stop Number" tab, polling, etc. For a real production application, requirements would be much more verbose, and tests would be defined aligning with the acceptance criteria of those  
