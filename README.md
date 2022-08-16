@@ -10,7 +10,7 @@ Run `npm run build` to build the project. The build artifacts will be stored in 
 
 ## App Configuration
 
-A config file for the app is located at `src/assets/config.json`. This config defines the base URL for the NexTrip API and the polling interval.
+A config file for the app is located at `src/assets/config.json`. This config defines the base URL for the NexTrip API and a polling interval for keeping departures up to date.
 
 ## Testing
 
@@ -59,6 +59,13 @@ I then created a service class (see `src/nex-trip.service.ts`) to handle the res
 
 ## Development Assumptions
 
+I made the following assumptions during my development process:
+
+- the users of this demo app are likely going to open it in a browser like Chrome or Safari, as well as a mobile phone
+- the NexTrip API at https://svc.metrotransit.org/nextrip can be called indefinitely and cross-origin
+- I should use the `departure_text` property on the departure API objects to display departure times, instead of the timestamps, because this seems to be what the example app uses
+- The rest of the API object properties that I used were assumptions, based on matching what the example app uses
+
 ## Getting the app "Production Ready"
 
 This app is not "production ready".
@@ -72,7 +79,4 @@ To get there, the following need to be done:
 - A testing/staging environment should be set up to host the app in a way similiar to how it would be hosted in production, so that it can be tested there before release
 - Error handling must be implemented to handle errors and display them to the user as appropriate
 - Error handling needs to be implmented to log errors and help support staff and developers debug issues in production
-
-## Development Challenges
-
-- wording in API [e.g., "place" vs "stop"]
+- Localization and accessibility should be considered with the product owner and implemented as needed
