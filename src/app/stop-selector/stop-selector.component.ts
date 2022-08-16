@@ -56,13 +56,9 @@ export class StopSelectorComponent implements OnInit {
   }
 
   private loadTrip(): void {
-    console.log('55555555555555555');
-    console.log('loadTrip()');
     this.nexTripService
       .getTripByStopId(this.inputStopNumber?.value)
       .then((trip) => {
-        console.log('11111111111111');
-        console.log(trip);
         this.loadedTrip = trip;
       })
       .catch((err) => {
